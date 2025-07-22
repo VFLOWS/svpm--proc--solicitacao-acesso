@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Fluxo de Acesso - SOD Protheus</title>
+    <link type="text/css" rel="stylesheet" href="https://fluig.totvs.com/style-guide/css/fluig-style-guide.min.css" />
+    <script type="text/javascript" src="https://fluig.totvs.com/portal/resources/js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="https://fluig.totvs.com/portal/resources/js/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://fluig.totvs.com/webdesk/vcXMLRPC.js"></script>
+    <script type="text/javascript" src="https://fluig.totvs.com/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://fluig.totvs.com/ecm_resources/resources/assets/forms/forms.js?v=1.7.0-210308"></script>
+    <script type="text/javascript" src="https://fluig.totvs.com/ecm_resources/resources/assets/forms/wdkdetail.js?v=1.7.0-210308"></script>
+</head>
+<body>
+<div class="fluig-style-guide" id="conteudo">
+    <form name="form" role="form">
+
+        <!-- Painel 1: Solicitação de Acesso -->
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: #3ac5bef5; color: white;">
+                <h3 class="panel-title"><b>Solicitação de Acesso</b></h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="panel panel-default" id="painelSolicitante">
+                    <div class="panel-heading" style="background-color: #3ac5bef5; color: white;">
+                      <h3 class="panel-title">
+                        <a class="collapse-icon up" data-toggle="collapse" data-parent="#accordion" href="#collapse_1">
+                          <b><span class="flaticon flaticon-message icon-sm"></span>&nbsp;Dados do Solicitante</b>
+                        </a>
+                      </h3>
+                    </div>
+            
+                    <div id="collapse_1" class="panel-collapse collapse in">            
+                        <div class="panel-body">            
+                            <div class="row">
+                                <div class="col-md-2 form-group">
+                                    <label>Data da Solicitação</label>
+                                    <input type="text" class="form-control" name="data_solicitacao" readonly />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Nome</label>
+                                    <input type="text" class="form-control" name="solicitante_nome" readonly />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>E-mail</label>
+                                    <input type="text" class="form-control" name="solicitante_email" readonly />
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <label>Matrícula</label>
+                                    <input type="text" class="form-control" name="solicitante_matricula" readonly />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Departamento / Área</label>
+                                    <input type="text" class="form-control" name="solicitante_departamento" readonly/>
+                                </div>
+                                <div class="col-md-4 form-group">  
+                                    <label>Cargo</label>
+                                    <input type="text" class="form-control" name="solicitante_cargo" readonly />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Gestor</label>
+                                    <input type="zoom" class="form-control" name="solicitante_gestor"
+                                        data-zoom="{							
+                                            'displayKey':'colleagueName',
+                                            'datasetId':'colleague',
+                                            'fields':[
+                                            {
+                                                'field':'colleagueName',
+                                                'label':'Nome',
+                                                'standard':'true',
+                                                'search':'true'
+                                            }
+                                            ]
+                                        }" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default" id="painelSolicitacao">
+                    <div class="panel-heading" style="background-color: #3ac5bef5; color: white;">
+                      <h3 class="panel-title">
+                        <a class="collapse-icon up" data-toggle="collapse" data-parent="#accordion" href="#collapse_2">
+                          <b><span class="flaticon flaticon-lock icon-sm"></span>&nbsp;Dados da Solicitação</b>
+                        </a>
+                      </h3>
+                    </div>
+            
+                    <div id="collapse_2" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="col-md-12">
+                            <h3>Lista de Acessos</h3>
+                            <div class="table">
+                              <table class="table table-striped table-bordered tabelaPaiFilho" id="tbAcessos" tablename="tbAcessos"
+                                name="tbAcessos">
+                                <thead>
+                                  <tr>
+                                    <th style="width: 50px; text-align: center;"></th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <tbody id="acessosTbody">
+                                  <tr>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                      <button type="button" class="btn btn-danger btn-sm" onclick="removerLinha(this)" title="Remover Acesso">
+                                        <i class="fluigicon fluigicon-trash icon-sm"></i>
+                                      </button>
+                                    </td>
+                                    <td>
+                                      <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label>Tipo de Acesso:<span style="color: red">*</span></label>
+                                            <select class="form-control" name="moduloProtheus">
+                                              <option value="">Selecione...</option>
+                                              <option value="Novo Acesso">Novo Acesso</option>
+                                              <option value="Alteracao de Acesso">Alteração de Acesso</option>
+                                              <option value="Remocao de Acesso">Remoção de Acesso</option>
+                                              <option value="Acesso Temporario">Acesso Temporário</option>
+                                            </select>
+                                        </div>  
+                                        <div class="col-md-4">
+                                          <label>Módulo do Protheus:<span style="color: red">*</span></label>
+                                          <select class="form-control" name="moduloProtheus">
+                                            <option value="">Selecione o módulo...</option>
+                                            <option value="SIGAFIN">SIGAFIN - Financeiro</option>
+                                            <option value="SIGAEST">SIGAEST - Estoque/Custos</option>
+                                            <option value="SIGACOM">SIGACOM - Compras</option>
+                                            <option value="SIGAFAT">SIGAFAT - Faturamento</option>
+                                            <option value="SIGAGPE">SIGAGPE - Gestão de Pessoal</option>
+                                            <option value="SIGACTB">SIGACTB - Contabilidade</option>
+                                            <option value="SIGAPCP">SIGAPCP - Planejamento e Controle de Produção</option>
+                                            <option value="SIGATMS">SIGATMS - Gestão de Transportes</option>
+                                            <option value="SIGALOJA">SIGALOJA - Automação Comercial</option>
+                                            <option value="SIGACRM">SIGACRM - Customer Relationship Management</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label>Perfil/Grupo de Acesso<span style="color: red">*</span></label>
+                                          <input type="text" class="form-control" name="perfilGrupoAcesso">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Usuário Beneficiado<span style="color: red">*</span></label>
+                                            <input type="text" class="form-control" name="usuarioBeneficiado">
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                       <div class="col-md-4">
+                                        <label>Justificativa<span style="color: red">*</span></label>
+                                        <textarea class="form-control" name="justificativa" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Data Início<span style="color: red">*</span></label>
+                                            <input type="date" class="form-control" name="data_inicio" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Data Término<span style="color: red">*</span></label>
+                                            <input type="date" class="form-control" name="data_termino" />
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div class="text-right" style="margin-bottom: 20px;">
+                                <button type="button" class="btn btn-primary" onclick="adicionarLinha()">
+                                    <i class="fluigicon fluigicon-plus icon-sm"></i> Adicionar Acesso
+                                </button>
+                              </div>
+                              <div class="alert alert-info" role="alert">
+                                <strong>Informação:</strong> Para acessos temporários, será necessário definir a data de vencimento. O sistema removerá automaticamente o acesso na data especificada.
+                            </div>   
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label>Declarações <span style="color: red">*</span></label>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="declaracao1" name="declaracoes" value="responsabilidade" required>
+                                            <label for="declaracao1">Declaro que assumo total responsabilidade pelo uso adequado dos acessos solicitados</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="declaracao2" name="declaracoes" value="politicas" required>
+                                            <label for="declaracao2">Estou ciente das políticas de segurança da informação e me comprometo a cumpri-las</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="declaracao3" name="declaracoes" value="confidencialidade" required>
+                                            <label for="declaracao3">Comprometo-me a manter a confidencialidade das informações acessadas</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="declaracao4" name="declaracoes" value="auditoria" required>
+                                            <label for="declaracao4">Autorizo a auditoria e monitoramento das atividades realizadas com os acessos concedidos</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel 2: Aprovação do Gestor -->
+        <div class="panel panel-default" id="painelAprovaçãoGestor">
+            <div class="panel-heading" style="background-color: #3ac5bef5; color: white;">
+              <h3 class="panel-title">
+                <a class="collapse-icon up" data-toggle="collapse" data-parent="#accordion" href="#collapse_3">
+                  <b><span class="flaticon flaticon-document-approved icon-sm"></span>&nbsp;Aprovação do Gestor</b>
+                </a>
+              </h3>
+            </div>
+    
+            <div id="collapse_3" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Data</label>
+                            <input type="text" class="form-control" name="data_gestor" readonly />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Nome do Gestor</label>
+                            <input type="text" class="form-control" name="gestor_nome" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Decisão <span class="text-danger">*</span></label>
+                            <select class="form-control" name="gestor_decisao">
+                                <option>Aprovar</option>
+                                <option>Rejeitar</option>
+                                <option>Solicitar Ajustes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Justificativa <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="gestor_justificativa"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel 3: Validação Técnica -->
+        <div class="panel panel-default" id="painelValidaçãoTecnica">
+            <div class="panel-heading" style="background-color: #3ac5bef5; color: white;">
+                <h3 class="panel-title">
+                <a class="collapse-icon up" data-toggle="collapse" data-parent="#accordion" href="#collapse_4">
+                    <b><span class="flaticon flaticon-internal-view icon-sm"></span>&nbsp;Validação Técnica - TI</b>
+                </a>
+                </h3>
+            </div>    
+            <div id="collapse_4" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Data</label>
+                            <input type="text" class="form-control" name="data_tecnico" readonly />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Nome do Técnico</label>
+                            <input type="text" class="form-control" name="tecnico_nome" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Decisão <span class="text-danger">*</span></label>
+                            <select class="form-control" name="tecnico_decisao">
+                                <option>Aprovar</option>
+                                <option>Rejeitar</option>
+                                <option>Solicitar Ajustes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Análise Técnica <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="tecnico_analise" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Impacto na Segregação de Funções <span class="text-danger">*</span></label>
+                            <select class="form-control" name="tecnico_impacto">
+                                <option>Nenhum</option>
+                                <option>Médio</option>
+                                <option>Alto</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Nível de Urgência <span class="text-danger">*</span></label>
+                            <select class="form-control" name="tecnico_urgencia">
+                                <option>Normal  - Até 5 dias</option>
+                                <option>Urgente - Até 2 dias</option>
+                                <option>Crítica - Até 1 dia</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Justificativa</label>
+                            <textarea class="form-control" name="tecnico_justificativa" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Análise de Segregação de Funções (SOD) -->
+        <div class="panel panel-default" id="painelValidaçãoTecnicaSOD">
+            <div class="panel-heading" style="background-color: #3ac5bef5; color: white;">
+                <h3 class="panel-title">
+                <a class="collapse-icon up" data-toggle="collapse" data-parent="#accordion" href="#collapse_sod">
+                    <b><span class="flaticon flaticon-account-balance icon-sm"></span>&nbsp;Análise de Segregação de Funções (SOD)</b>
+                </a>
+                </h3>
+            </div>    
+            <div id="collapse_sod" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Data</label>
+                            <input type="text" class="form-control" name="sod_data" readonly />
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Responsável</label>
+                            <input type="text" class="form-control" name="sod_responsavel" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Decisão <span class="text-danger">*</span></label>
+                            <select class="form-control" name="sod_decisao">
+                                <option>Aprovar</option>
+                                <option>Rejeitar</option>
+                                <option>Solicitar Ajustes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Justificativa/Observação <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="sod_justificativa"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Funções/Acessos Já Exercidos pelo Usuário <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="sod_acessos_exercidos"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Possíveis Conflitos Identificados <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="sod_conflitos_identificados"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Controles Compensatórios Propostos <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="sod_controles_propostos"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+function adicionarLinha() {
+    const tbody = document.getElementById('acessosTbody');
+    const novaLinha = tbody.rows[0].cloneNode(true);
+    
+    // Limpar os valores dos campos
+    const inputs = novaLinha.getElementsByTagName('input');
+    const textareas = novaLinha.getElementsByTagName('textarea');
+    const selects = novaLinha.getElementsByTagName('select');
+    
+    for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].type === 'text' || inputs[i].type === 'date') {
+            inputs[i].value = '';
+        }
+    }
+    
+    for (let i = 0; i < textareas.length; i++) {
+        textareas[i].value = '';
+    }
+    
+    for (let i = 0; i < selects.length; i++) {
+        selects[i].selectedIndex = 0;
+    }
+    
+    tbody.appendChild(novaLinha);
+}
+
+function removerLinha(botao) {
+    const tr = botao.closest('tr');
+    const tbody = document.getElementById('acessosTbody');
+    
+    // Não remover se for a última linha
+    if (tbody.rows.length > 1) {
+        tr.remove();
+    } else {
+        alert('É necessário manter pelo menos um acesso.');
+    }
+}
+</script>
+</html>
