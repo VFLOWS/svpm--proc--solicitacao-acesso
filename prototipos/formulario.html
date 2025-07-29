@@ -123,8 +123,20 @@
                                             </select>
                                         </div>  
                                         <div class="col-md-3">
-                                            <label>Usuário Beneficiado<span style="color: red">*</span></label>
-                                            <input type="text" class="form-control" name="usuarioBeneficiado">
+                                            <label for="usuarioBeneficiado">Usuário Beneficiado<span style="color: red">*</span></label>
+                                            <select class="form-control" name="usuarioBeneficiado" required>
+                                                <option value="">Selecione um usuário...</option>
+                                                <option value="1">Ana Clara Santos (ac.santos)</option>
+                                                <option value="2">Bruno Oliveira (b.oliveira)</option>
+                                                <option value="3">Carlos Eduardo Lima (ce.lima)</option>
+                                                <option value="4">Daniela Costa (d.costa)</option>
+                                                <option value="5">Eduardo Martins (e.martins)</option>
+                                                <option value="6">Fernanda Almeida (f.almeida)</option>
+                                                <option value="7">Gabriel Pereira (g.pereira)</option>
+                                                <option value="8">Juliana Rocha (j.rocha)</option>
+                                                <option value="9">Lucas Mendes (l.mendes)</option>
+                                                <option value="10">Mariana Silva (m.silva)</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-4">
                                           <label>Módulo do Protheus:<span style="color: red">*</span></label>
@@ -143,9 +155,32 @@
                                           </select>
                                         </div>
                                         <div class="col-md-3">
-                                          <label>Rotina<span style="color: red">*</span></label>
-                                          <input type="text" class="form-control" name="rotina">
+                                          <label for="rotina">Rotina<span style="color: red">*</span></label>
+                                          <select class="form-control" name="rotina" id="selectRotina" onchange="carregarOpcoesRotina(this.value)">
+                                            <option value="">Selecione a rotina...</option>
+                                            <option value="MATA001">Matriz de Abastecimento</option>
+                                            <option value="MATA002">Relação Tp Vs Cfop</option>
+                                            <option value="MATA010">Produtos</option>
+                                            <option value="MATA014">Permissões</option>
+                                            <option value="MATA018">Indicador Produtos</option>
+                                            <option value="MATA019">Indicador (mod. 2)</option>
+                                            <option value="MATA020">Fornecedores</option>
+                                            <option value="MATA035">Grupo de Produtos</option>
+                                            <option value="MATA045">Messenger</option>
+                                            <option value="MATA061">Produtos X Fornecedor</option>
+                                            <option value="MATA065">Grupo X Fornecedor</option>
+                                            <option value="MATA070">Bancos</option>
+                                            <option value="MATA080">Tipos de Entrada e Saída</option>
+                                            <option value="MATA084">Solicitantes</option>
+                                            <option value="MATA089">Entrada/saida Inteligente</option>
+                                            <option value="MATA090">Moedas</option>
+                                            <option value="MATA094">Liberar de Documentos</option>
+                                            <option value="MATA095">Aprovadores</option>
+                                          </select>
                                         </div>
+                                      </div>
+                                      <div class="form-group row" id="divPrivilegios">
+                                        <!-- As opções serão carregadas aqui dinamicamente -->
                                       </div>
                                       <div class="form-group row">
                                        <div class="col-md-4">
@@ -349,7 +384,7 @@
                             <textarea class="form-control" name="sod_justificativa"></textarea>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" hidden>
                         <div class="col-md-12 form-group">
                             <label>Funções/Acessos Já Exercidos pelo Usuário <span class="text-danger">*</span></label>
                             <textarea class="form-control" name="sod_acessos_exercidos"></textarea>
@@ -411,5 +446,81 @@ function removerLinha(botao) {
         alert('É necessário manter pelo menos um acesso.');
     }
 }
+
+// Função para carregar as opções da rotina selecionada
+function carregarOpcoesRotina(codigoRotina) {
+    const divPrivilegios = document.getElementById('divPrivilegios');
+    divPrivilegios.innerHTML = ''; // Limpa as opções atuais
+    
+    if (!codigoRotina) return; // Se não houver rotina selecionada, não faz nada
+    
+    // Aqui você faria uma chamada AJAX para buscar as opções da rotina
+    // Por enquanto, vamos simular com dados estáticos baseados no print
+    const opcoes = [
+        { id: 'INCLUIR', descricao: 'Incluir' },
+        { id: 'ALTERAR', descricao: 'Alterar' },
+        { id: 'EXCLUIR', descricao: 'Excluir' },
+        { id: 'VISUALIZAR', descricao: 'Visualizar' },
+        { id: 'IMPRIMIR', descricao: 'Imprimir' },
+        { id: 'COPIAR', descricao: 'Copiar' },
+        { id: 'PESQUISAR', descricao: 'Pesquisar' },
+        { id: 'ORDENAR', descricao: 'Ordenar' },
+        { id: 'EXPORTAR', descricao: 'Exportar' },
+        { id: 'IMPORTAR', descricao: 'Importar' },
+        { id: 'VALIDAR', descricao: 'Validar' },
+        { id: 'CANCELAR', descricao: 'Cancelar' },
+        { id: 'LIBERAR', descricao: 'Liberar' },
+        { id: 'ESTORNAR', descricao: 'Estornar' },
+        { id: 'DUPLICAR', descricao: 'Duplicar' },
+        { id: 'ENVIAR', descricao: 'Enviar' },
+        { id: 'APROVAR', descricao: 'Aprovar' },
+        { id: 'REPROVAR', descricao: 'Reprovar' },
+        { id: 'ANEXAR', descricao: 'Anexar' },
+        { id: 'VINCULAR', descricao: 'Vincular' },
+        { id: 'DESVINCULAR', descricao: 'Desvincular' },
+        { id: 'ASSINAR', descricao: 'Assinar' },
+        { id: 'COMPARTILHAR', descricao: 'Compartilhar' },
+        { id: 'GERAR', descricao: 'Gerar' },
+        { id: 'CONFIGURAR', descricao: 'Configurar' },
+        { id: 'EXECUTAR', descricao: 'Executar' },
+        { id: 'MONITORAR', descricao: 'Monitorar' },
+        { id: 'AUDITAR', descricao: 'Auditar' },
+        { id: 'TODOS', descricao: 'Todos' }
+    ];
+    
+    // Cria um container para os checkboxes
+    const container = document.createElement('div');
+    container.className = 'col-md-12';
+    container.innerHTML = '<label>Privilégios:</label><div class="row" id="checkboxesContainer"></div>';
+    
+    // Adiciona os checkboxes
+    const checkboxesContainer = container.querySelector('#checkboxesContainer');
+    opcoes.forEach(opcao => {
+        const col = document.createElement('div');
+        col.className = 'col-md-3';
+        col.innerHTML = `
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="privilegios[]" value="${opcao.id}">
+                    ${opcao.descricao}
+                </label>
+            </div>
+        `;
+        checkboxesContainer.appendChild(col);
+    });
+    
+    // Adiciona o container à div de privilégios
+    divPrivilegios.appendChild(container);
+}
+
+// Adiciona o evento de mudança para o select de rotina
+document.addEventListener('DOMContentLoaded', function() {
+    const selectRotina = document.getElementById('selectRotina');
+    if (selectRotina) {
+        selectRotina.addEventListener('change', function() {
+            carregarOpcoesRotina(this.value);
+        });
+    }
+});
 </script>
 </html>
