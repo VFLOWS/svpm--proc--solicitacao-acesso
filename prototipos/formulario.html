@@ -179,9 +179,6 @@
                                           </select>
                                         </div>
                                       </div>
-                                      <div class="form-group row" id="divPrivilegios">
-                                        <!-- As opções serão carregadas aqui dinamicamente -->
-                                      </div>
                                       <div class="form-group row">
                                        <div class="col-md-4">
                                         <label>Justificativa<span style="color: red">*</span></label>
@@ -196,11 +193,13 @@
                                             <input type="date" class="form-control" name="data_termino" />
                                         </div>
                                       </div>
+                                      <div class="form-group row" id="divPrivilegios">
+                                      </div>                                    
                                     </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              <div class="text-right" style="margin-bottom: 20px;">
+                                </tr>
+                              </tbody>
+                            </table>
+                            <div class="text-right" style="margin-bottom: 20px;">
                                 <button type="button" class="btn btn-primary" onclick="adicionarLinha()">
                                     <i class="fluigicon fluigicon-plus icon-sm"></i> Adicionar Acesso
                                 </button>
@@ -320,14 +319,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label>Impacto na Segregação de Funções <span class="text-danger">*</span></label>
-                            <select class="form-control" name="tecnico_impacto">
-                                <option>Nenhum</option>
-                                <option>Médio</option>
-                                <option>Alto</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
                             <label>Nível de Urgência <span class="text-danger">*</span></label>
                             <select class="form-control" name="tecnico_urgencia">
                                 <option>Normal  - Até 5 dias</option>
@@ -389,7 +380,16 @@
                             <label>Funções/Acessos Já Exercidos pelo Usuário <span class="text-danger">*</span></label>
                             <textarea class="form-control" name="sod_acessos_exercidos"></textarea>
                         </div>
+                        <div class="col-md-6 form-group">
+                            <label>Impacto na Segregação de Funções <span class="text-danger">*</span></label>
+                            <select class="form-control" name="sod_impacto">
+                                <option>Nenhum</option>
+                                <option>Médio</option>
+                                <option>Alto</option>
+                            </select>
+                        </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Possíveis Conflitos Identificados <span class="text-danger">*</span></label>
