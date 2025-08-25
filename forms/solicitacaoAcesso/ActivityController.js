@@ -82,13 +82,13 @@ class ActivityController {
 
 	_controllerActivityInicio(formMode, atividade, formView, formController, customizado) {
 
+		if ($("#tbAcessos tbody tr").length === 1) {
+			adicionarLinhaAcesso();
+		}
 
-			// 🔹 Adiciona automaticamente a primeira linha ao carregar o formulário
-			if ($("#tbAcessos tbody tr").length === 1) {
-				adicionarLinhaAcesso();
-			}
 
-	
+
+
 
 		// Oculta os painéis que não serão usados nesta atividade
 		formView.ocultarPainel(
@@ -97,114 +97,66 @@ class ActivityController {
 			Painel.ANALISAR_ACESSOS,
 			Painel.EXECUTAR_SOLICITACAO
 		);
-	
+
 		// Adicionar evento ao botão de "Adicionar Acesso"
 		$("#btnAdicionarAcesso").on("click", function () {
 			adicionarLinhaAcesso();
 		});
-	
+
 		// Delegar evento para remover linha
 		$("#tbAcessos").on("click", ".btn-remover-acesso", function () {
 			removerLinhaAcesso(this);
 		});
-	
+
 		// Delegar evento para mudança no select de rotina
 		$("#tbAcessos").on("change", "select[name^='rotina___']", function () {
-			carregarOpcoesRotinaFluig($(this));
+			// Obter a linha ou índice da rotina selecionada
+			const linhaId = $(this).attr("name").split("___")[1];
+
+			// Selecionar a div de privilégios correspondente
+			const divPrivilegios = $("#divPrivilegios___" + linhaId);
+
+			// Verificar se algum valor foi selecionado
+			if ($(this).val() !== "") {
+				divPrivilegios.show(); // Mostra a div
+			} else {
+				divPrivilegios.hide(); // Esconde se estiver vazio
+			}
 		});
-	
-	
-	
+
+
+
+
 		// Função para adicionar linha usando wdkAddChild
 		function adicionarLinhaAcesso() {
+			// Se só existe o template invisível (___1), cria uma linha extra invisível (___2)
+			if ($("#tbAcessos tbody tr").length === 1) {
+				var idxFake = wdkAddChild('tbAcessos'); // cria ___2
+
+				// Encontra qualquer campo dessa linha e sobe até o <tr> para esconder
+				$("*[name*='___" + idxFake + "']").closest("tr").hide();
+			}
+
+			// Agora cria a linha visível (será ___3 na primeira vez)
 			var idx = wdkAddChild('tbAcessos');
-			limparCamposLinha(idx);
+			return idx;
 		}
 
-		
-	
-		// Limpa valores da nova linha
-		function limparCamposLinha(idx) {
-			$(`#tipoAcesso___${idx}`).val("");
-			$(`#usuarioBeneficiado___${idx}`).val("");
-			$(`#moduloProtheus___${idx}`).val("");
-			$(`#rotina___${idx}`).val("");
-			$(`#justificativa___${idx}`).val("");
-			$(`#data_inicio___${idx}`).val("");
-			$(`#data_termino___${idx}`).val("");
-			$(`#divPrivilegios___${idx}`).empty();
-		}
-	
+
+
 		// Remove a linha, mantendo pelo menos 1
 		function removerLinhaAcesso(botao) {
-			if ($("#tbAcessos tbody tr").length > 1) {
+			if ($("#tbAcessos tbody tr").length > 3) {
 				fnWdkRemoveChild(botao);
 			} else {
 				FLUIGC.toast({ message: 'É necessário manter pelo menos um acesso.', type: 'warning' });
 			}
 		}
-	
-		// Carregar opções de privilégios na linha específica
-		function carregarOpcoesRotinaFluig($select) {
-			var codigoRotina = $select.val();
-			var idx = $select.attr("id").split("___")[1];
-			var $divPrivilegios = $(`#divPrivilegios___${idx}`);
-	
-			$divPrivilegios.empty();
-			if (!codigoRotina) return;
-	
-			var opcoes = [
-				{ id: 'INCLUIR', descricao: 'Incluir' },
-				{ id: 'ALTERAR', descricao: 'Alterar' },
-				{ id: 'EXCLUIR', descricao: 'Excluir' },
-				{ id: 'VISUALIZAR', descricao: 'Visualizar' },
-				{ id: 'IMPRIMIR', descricao: 'Imprimir' },
-				{ id: 'COPIAR', descricao: 'Copiar' },
-				{ id: 'PESQUISAR', descricao: 'Pesquisar' },
-				{ id: 'ORDENAR', descricao: 'Ordenar' },
-				{ id: 'EXPORTAR', descricao: 'Exportar' },
-				{ id: 'IMPORTAR', descricao: 'Importar' },
-				{ id: 'VALIDAR', descricao: 'Validar' },
-				{ id: 'CANCELAR', descricao: 'Cancelar' },
-				{ id: 'LIBERAR', descricao: 'Liberar' },
-				{ id: 'ESTORNAR', descricao: 'Estornar' },
-				{ id: 'DUPLICAR', descricao: 'Duplicar' },
-				{ id: 'ENVIAR', descricao: 'Enviar' },
-				{ id: 'APROVAR', descricao: 'Aprovar' },
-				{ id: 'REPROVAR', descricao: 'Reprovar' },
-				{ id: 'ANEXAR', descricao: 'Anexar' },
-				{ id: 'VINCULAR', descricao: 'Vincular' },
-				{ id: 'DESVINCULAR', descricao: 'Desvincular' },
-				{ id: 'ASSINAR', descricao: 'Assinar' },
-				{ id: 'COMPARTILHAR', descricao: 'Compartilhar' },
-				{ id: 'GERAR', descricao: 'Gerar' },
-				{ id: 'CONFIGURAR', descricao: 'Configurar' },
-				{ id: 'EXECUTAR', descricao: 'Executar' },
-				{ id: 'MONITORAR', descricao: 'Monitorar' },
-				{ id: 'AUDITAR', descricao: 'Auditar' },
-				{ id: 'TODOS', descricao: 'Todos' }
-			];
-	
-			var html = '<label>Privilégios:</label><div class="row">';
-			opcoes.forEach(opcao => {
-				html += `
-					<div class="col-md-3">
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="privilegios___${idx}" value="${opcao.id}">
-								${opcao.descricao}
-							</label>
-						</div>
-					</div>
-				`;
-			});
-			html += '</div>';
-	
-			$divPrivilegios.append(html);
-		}
+
+
 	}
-	
-	
+
+
 
 	_ViewActivityInicio(formMode, atividade, formView, formController) {
 
@@ -239,8 +191,8 @@ class ActivityController {
 		if (errorMsg != '') {
 			throw errorMsg;
 		} else {
-			
-			
+
+
 			FormController.salvarPainelHistorico('painelSolicitante', 'dataSolicitacao', 'nomeSolicitante');
 			FormController.salvarPainelHistorico('painelSolicitacao', 'dataSolicitacao', 'nomeSolicitante');
 		}

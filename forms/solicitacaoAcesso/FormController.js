@@ -671,45 +671,7 @@ class FormController {
         $('#painelSolicitacaoDadosPagto').show()
       }
 
-      if (idSelecionado.includes(itemContrato)) {
-        const posicaoTabela = idSelecionado.split('___')[1];
-        const ID_TABELA = 'tableAdicionarItem';
-        const idCampo = `itemContratoSeq`;
-        const valorCampo = zoomItem['NUMEROSEQUENCIAL'];
-        const tipoMedicao = zoomItem['TIPOMEDICAO'];
-        $(`#tipoMedicaoContratoHidden___${posicaoTabela}`).val(tipoMedicao)
-
-        $(`#${idCampo}___${posicaoTabela}`).val(zoomItem['NUMEROSEQUENCIAL'])
-
-        const cCentroCusto = DatasetFactory.createConstraint('CODCCUSTO', zoomItem['CODCCUSTO'], zoomItem['CODCCUSTO'], ConstraintType.MUST);
-        const dsCentroCusto = DatasetFactory.getDataset('dsConsultaCentroCustoUsuarioCompras_wsConsultaSQL', [], [cCentroCusto], null).values[0];
-
-        $('#unidadeItem___' + posicaoTabela).val(dsCentroCusto['NOMEUNIDADEORGANIZACIONAL']);
-        $('#descricaoCentroCustoItem___' + posicaoTabela).val(dsCentroCusto['DESC_CCUSTO']);
-        $('#codigoCentroCustoItem___' + posicaoTabela).val(dsCentroCusto['CODCCUSTO']);
-        $('#quantidade___' + posicaoTabela).val(Number(zoomItem['QUANTIDADE']));
-
-        const quantidade = zoomItem['QUANTIDADE'];
-        const valorUnitario = zoomItem['PRECO'];
-
-        const resultadoBusca = Util.buscarItemJaSelecionadoTabela(ID_TABELA, idCampo, valorCampo);
-        if (resultadoBusca) {
-          Util.exibirToast('Atenção: ', 'Não é possível adicionar dois itens de contrato na mesma categoria', 'warning');
-          window[idSelecionado].clear();
-          $(`#${idCampo}___${posicaoTabela}`).val('');
-          $(`#itemContrato___${posicaoTabela}`).val('');
-          $('#unidadeItem___' + posicaoTabela).val('');
-          $(`#codigoCentroCustoItem___${posicaoTabela}`).val('');
-          $('#descricaoCentroCustoItem___' + posicaoTabela).val('');
-          $('#quantidade___' + posicaoTabela).val('');
-          $('#valorUnitario___' + posicaoTabela).val('');
-          $('#valorTotal___' + posicaoTabela).val('');
-        }
-        else {
-          this.carregaFuncionalidadesTabela(quantidade, valorUnitario, posicaoTabela);
-        }
-      }
-
+     
       if (idSelecionado == nomeBanco) {
         $('#codigoBancoHidden').val(zoomItem["NUMEROOFICIAL"]);
       }

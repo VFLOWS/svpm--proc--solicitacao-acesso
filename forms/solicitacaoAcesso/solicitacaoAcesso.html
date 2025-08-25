@@ -3,20 +3,39 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Fluxo de Acesso - SOD Protheus</title>
 	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css" />
+
+
 	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+
 	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+
 	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+
 	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+
 	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+
+
 	<script type="text/javascript" src="jquery.mask.js"></script>
+
 	<link type="text/css" rel="stylesheet" href="style.css" />
+
 	<script type="text/javascript" src="./FormController.js"></script>
+
+
 	<script type="text/javascript" src="./ActivityController.js"></script>
+
+
+
 	<script type="text/javascript" src="./Util.js"></script>
+
 	<script type="text/javascript" src="./FormView.js"></script>
+
 	<script type="text/javascript" src="./FluigFile.js"></script>
+
+
+
 </head>
 
 <body>
@@ -193,7 +212,7 @@
 
 
 									<table class="table table-striped table-bordered tabelaPaiFilho" id="tbAcessos"
-										tablename="tbAcessos" name="tbAcessos" noaddbutton="true">
+										tablename="tbAcessos" name="tbAcessos">
 										<thead>
 											<tr>
 												<th colspan="2" style="text-align: center;"></th>
@@ -315,7 +334,126 @@
 														</div>
 													</div>
 
-													<div class="form-group row" id="divPrivilegios___1"></div>
+													<div class="form-group row" id="divPrivilegios___1"
+														style="display: none;">
+														<label>Privilégios:</label>
+														<div class="row">
+															<!-- Linha 1 -->
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxIncluir"
+																			value="INCLUIR"> Incluir</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxAlterar"
+																			value="ALTERAR"> Alterar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxExcluir"
+																			value="EXCLUIR"> Excluir</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxVisualizar"
+																			value="VISUALIZAR"> Visualizar</label>
+																</div>
+															</div>
+
+															<!-- Linha 2 -->
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxImprimir" value="IMPRIMIR">
+																		Imprimir</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxCopiar"
+																			value="COPIAR"> Copiar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxPesquisar" value="PESQUISAR">
+																		Pesquisar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxOrdenar"
+																			value="ORDENAR"> Ordenar</label>
+																</div>
+															</div>
+
+															<!-- Linha 3 -->
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxExportar" value="EXPORTAR">
+																		Exportar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxImportar" value="IMPORTAR">
+																		Importar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxValidar"
+																			value="VALIDAR"> Validar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxCancelar" value="CANCELAR">
+																		Cancelar</label>
+																</div>
+															</div>
+
+															<!-- Linha 4 -->
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxLiberar"
+																			value="LIBERAR"> Liberar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxEstornar" value="ESTORNAR">
+																		Estornar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox"
+																			name="checkboxDuplicar" value="DUPLICAR">
+																		Duplicar</label>
+																</div>
+															</div>
+															<div class="col-md-3">
+																<div class="checkbox">
+																	<label><input type="checkbox" name="checkboxEnviar"
+																			value="ENVIAR"> Enviar</label>
+																</div>
+															</div>
+														</div>
+													</div>
+
+
+
 												</td>
 											</tr>
 										</tbody>
@@ -515,12 +653,14 @@
 						<div class="row">
 							<div class="col-md-6 form-group">
 								<label>Data</label>
-								<input type="text" class="form-control" name="dataValTecSOD" id="dataValTecSOD" readonly />
+								<input type="text" class="form-control" name="dataValTecSOD" id="dataValTecSOD"
+									readonly />
 							</div>
 
 							<div class="col-md-6 form-group">
 								<label>Responsável</label>
-								<input type="text" class="form-control" name="dataValTecSOD" id="dataValTecSOD" readonly />
+								<input type="text" class="form-control" name="nomeValTecSOD" id="nomeValTecSOD"
+									readonly />
 							</div>
 						</div>
 						<div class="row">
